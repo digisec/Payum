@@ -18,9 +18,13 @@
         "omnipay",
         "jms payment"
     ],
-    "homepage": "http://payum.forma-dev.com",
+    "homepage": "https://github.com/digisec/Payum",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Digisec Team",
+            "homepage": "https://github.com/digisec/Payum"
+        },
         {
             "name": "Kotlyar Maksim",
             "email": "kotlyar.maksim@gmail.com"
@@ -69,7 +73,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.6-dev"
+            "dev-master": "0.8-dev",
+            "dev-develop": "0.6-dev"
         }
     }
 }
