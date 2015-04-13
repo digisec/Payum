@@ -1,11 +1,11 @@
 <?php
 namespace Payum\Payex;
 
-use Payum\Core\Action\ExecuteSameRequestWithModelDetailsAction;
+use Payum\Action\SyncDetailsAggregatedModelAction;
 use Payum\Payex\Action\Api\CheckOrderAction;
 use Payum\Payex\Action\PaymentDetailsSyncAction;
-use Payum\Core\Payment;
-use Payum\Core\Extension\EndlessCycleDetectorExtension;
+use Payum\Payment;
+use Payum\Extension\EndlessCycleDetectorExtension;
 use Payum\Payex\Action\Api\AutoPayAgreementAction;
 use Payum\Payex\Action\Api\CheckAgreementAction;
 use Payum\Payex\Action\Api\CompleteOrderAction;
@@ -31,7 +31,7 @@ abstract class PaymentFactory
      * @param Api\AgreementApi $agreementApi
      * @param Api\RecurringApi $recurringApi
      * 
-     * @return \Payum\Core\Payment
+     * @return \Payum\Payment
      */
     public static function create(OrderApi $orderApi, AgreementApi $agreementApi = null, RecurringApi $recurringApi = null)
     {
@@ -41,6 +41,8 @@ abstract class PaymentFactory
             $payment->addApi($agreementApi);
             
             $payment->addAction(new AgreementDetailsStatusAction);
+            $payment->addAction(new SyncDetailsAggregatedModelAction);
+            
             $payment->addAction(new CreateAgreementAction);
             $payment->addAction(new DeleteAgreementAction);
             $payment->addAction(new CheckAgreementAction);
@@ -68,7 +70,6 @@ abstract class PaymentFactory
         $payment->addAction(new PaymentDetailsSyncAction);
         $payment->addAction(new AutoPayPaymentDetailsCaptureAction);
         $payment->addAction(new AutoPayPaymentDetailsStatusAction);
-        $payment->addAction(new ExecuteSameRequestWithModelDetailsAction);
 
         return $payment;
     }

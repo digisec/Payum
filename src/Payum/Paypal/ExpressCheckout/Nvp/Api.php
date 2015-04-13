@@ -4,8 +4,8 @@ namespace Payum\Paypal\ExpressCheckout\Nvp;
 use Buzz\Client\ClientInterface;
 use Buzz\Message\Form\FormRequest;
 
-use Payum\Core\Exception\Http\HttpException;
-use Payum\Core\Exception\InvalidArgumentException;
+use Payum\Exception\Http\HttpException;
+use Payum\Exception\InvalidArgumentException;
 use Payum\Paypal\ExpressCheckout\Nvp\Bridge\Buzz\Response;
 use Payum\Paypal\ExpressCheckout\Nvp\Exception\Http\HttpResponseAckNotSuccessException;
 
@@ -273,12 +273,6 @@ class Api
 
     const RECURRINGPAYMENTACTION_CANCEL = 'Cancel';
 
-    const USERACTION_COMMIT = 'commit';
-
-    const CMD_EXPRESS_CHECKOUT = '_express-checkout';
-
-    const CMD_EXPRESS_CHECKOUT_MOBILE = '_express-checkout-mobile';
-
     const VERSION = '65.1';
 
     protected $client;
@@ -290,8 +284,6 @@ class Api
         'return_url' => null,
         'cancel_url' => null,
         'sandbox' => null,
-        'useraction' => null,
-        'cmd' => Api::CMD_EXPRESS_CHECKOUT,
     );
 
     public function __construct(ClientInterface $client, array $options)
@@ -325,7 +317,7 @@ class Api
         $fields = $request->getFields();
         if (false == isset($fields['RETURNURL'])) {
             if (false == $this->options['return_url']) {
-                throw new \Payum\Core\Exception\RuntimeException('The return_url must be set either to FormRequest or to options.');
+                throw new \Payum\Exception\RuntimeException('The return_url must be set either to FormRequest or to options.');
             }
 
             $request->setField('RETURNURL', $this->options['return_url']);
@@ -333,7 +325,7 @@ class Api
 
         if (false == isset($fields['CANCELURL'])) {
             if (false == $this->options['cancel_url']) {
-                throw new \Payum\Core\Exception\RuntimeException('The cancel_url must be set either to FormRequest or to options.');
+                throw new \Payum\Exception\RuntimeException('The cancel_url must be set either to FormRequest or to options.');
             }
 
             $request->setField('CANCELURL', $this->options['cancel_url']);
@@ -446,7 +438,7 @@ class Api
     /**
      * @param \Buzz\Message\Form\FormRequest $request
      *
-     * @throws \Payum\Core\Exception\Http\HttpException
+     * @throws \Payum\Exception\Http\HttpException
      *
      * @return \Payum\Paypal\ExpressCheckout\Nvp\Bridge\Buzz\Response
      */
@@ -476,20 +468,14 @@ class Api
      * 
      * @return string
      */
-    public function getAuthorizeTokenUrl($token, array $query = array())
+    public function getAuthorizeTokenUrl($token)
     {
-        $defaultQuery = array_filter(array(
-            'useraction' => $this->options['useraction'],
-            'cmd' => $this->options['cmd'],
-            'token' => $token,
-        ));
-
-        $query = array_filter($query);
+        $host = $this->options['sandbox'] ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
         return sprintf(
-            'https://%s/cgi-bin/webscr?%s',
-            $this->options['sandbox'] ? 'www.sandbox.paypal.com' : 'www.paypal.com',
-            http_build_query(array_replace($defaultQuery, $query))
+            'https://%s/cgi-bin/webscr?cmd=_express-checkout&token=%s',
+            $host,
+            $token
         );
     }
 

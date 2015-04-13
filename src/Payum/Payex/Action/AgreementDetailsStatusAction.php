@@ -1,21 +1,21 @@
 <?php
 namespace Payum\Payex\Action;
 
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Action\ActionInterface;
+use Payum\Bridge\Spl\ArrayObject;
+use Payum\Exception\RequestNotSupportedException;
 use Payum\Payex\Api\AgreementApi;
-use Payum\Core\Request\StatusRequestInterface;
+use Payum\Request\StatusRequestInterface;
 use Payum\Payex\Api\OrderApi;
 
-class AgreementDetailsStatusAction implements \Payum\Core\Action\ActionInterface
+class AgreementDetailsStatusAction implements ActionInterface
 {
     /**
      * {@inheritDoc}
      */
     public function execute($request)
     {
-        /** @var $request \Payum\Core\Request\StatusRequestInterface */
+        /** @var $request StatusRequestInterface */
         if (false == $this->supports($request)) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
