@@ -46,6 +46,8 @@ class RecurringApi extends BaseApi
         //Deprecated, set to blank.
         $parameters['notifyUrl'] = '';
 
+        $parameters['price'] = (integer) $parameters['price'];
+
         $parameters['hash'] = $this->calculateHash($parameters, array(
             'accountNumber',
             'agreementRef',

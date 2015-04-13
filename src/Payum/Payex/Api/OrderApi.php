@@ -93,7 +93,10 @@ class OrderApi extends BaseApi
             $parameters['orderID'] = $parameters['orderId'];
             unset($parameters['orderId']);
         }
-        
+
+        $parameters['price'] = (integer) $parameters['price'];
+        $parameters['vat'] = (integer) $parameters['vat'];
+
         $parameters['hash'] = $this->calculateHash($parameters, array(
             'accountNumber',
             'purchaseOperation',
