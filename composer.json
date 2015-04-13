@@ -77,7 +77,7 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": { "Payum": "src/Payum/" }
+        "psr-0": { "Payum": "src/" }
     },
     "extra": {
         "branch-alias": {
