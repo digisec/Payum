@@ -94,8 +94,8 @@ class OrderApi extends BaseApi
             unset($parameters['orderId']);
         }
 
-        $parameters['price'] = (integer) $parameters['price'];
-        $parameters['vat'] = (integer) $parameters['vat'];
+        $parameters['price'] = (integer) round($parameters['price']);
+        $parameters['vat'] = (integer) round($parameters['vat']);
 
         $parameters['hash'] = $this->calculateHash($parameters, array(
             'accountNumber',
